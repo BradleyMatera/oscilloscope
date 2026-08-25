@@ -24,6 +24,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Validate JavaScript syntax
+        run: |
+          node --check app.js
+          node --check tone-copy.js
+          node --check ui.js
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
