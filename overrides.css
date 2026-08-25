@@ -187,6 +187,63 @@ body.analyzer-floating #analyzerFrame .readouts { gap: 12px; }
 body.analyzer-floating #analyzerFrame .readouts span { min-width: 36px; }
 body.analyzer-floating #analyzerFrame .mini-tool-btn { border-color: rgba(184,255,59,.35); }
 
+/* Minimized follower: only playback essentials remain visible. */
+body.analyzer-floating.analyzer-minimized #analyzerFrame {
+  width: min(430px, calc(100vw - 44px));
+  max-height: none;
+  overflow: visible;
+}
+body.analyzer-floating.analyzer-minimized #analyzerFrame .scope-wrap,
+body.analyzer-floating.analyzer-minimized #analyzerFrame .mode-strip,
+body.analyzer-floating.analyzer-minimized #analyzerFrame .instrument-controls,
+body.analyzer-floating.analyzer-minimized #analyzerFrame .readouts,
+body.analyzer-floating.analyzer-minimized #analyzerFrame .instrument-head > div:first-child,
+body.analyzer-floating.analyzer-minimized #analyzerFrame #analyzerControlsToggle,
+body.analyzer-floating.analyzer-minimized #analyzerFrame #floatAnalyzerBtn {
+  display: none !important;
+}
+body.analyzer-floating.analyzer-minimized #analyzerFrame .instrument-head {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 3;
+  min-height: 0;
+  padding: 0;
+  display: block;
+  border: 0;
+  background: transparent;
+}
+body.analyzer-floating.analyzer-minimized #analyzerFrame .instrument-head-actions {
+  display: block;
+}
+body.analyzer-floating.analyzer-minimized #analyzerFrame .analyzer-minimize-btn {
+  min-height: 34px;
+  padding-inline: 12px;
+  background: #0b0e0f;
+}
+body.analyzer-floating.analyzer-minimized #analyzerFrame .transport {
+  min-height: 64px;
+  padding: 8px 92px 8px 10px;
+  border-top: 0;
+}
+body.analyzer-floating.analyzer-minimized #analyzerFrame .transport-btn {
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
+}
+body.analyzer-floating.analyzer-minimized #analyzerFrame .track-meta {
+  min-width: 0;
+}
+body.analyzer-floating.analyzer-minimized #analyzerFrame .track-meta strong,
+body.analyzer-floating.analyzer-minimized #analyzerFrame .track-meta span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+body.analyzer-floating.analyzer-minimized #analyzerFrame .level-control {
+  min-width: 92px;
+}
+
 @media (max-width: 1100px) {
   .hero-new { grid-template-columns: 1fr; min-height: auto; }
   .why-card { max-width: 850px; }
@@ -225,6 +282,17 @@ body.analyzer-floating #analyzerFrame .mini-tool-btn { border-color: rgba(184,25
   body.analyzer-floating #analyzerFrame .readouts span:nth-child(n+3) { display: none; }
   body.analyzer-floating #analyzerFrame .mode-btn { min-height: 38px; font-size: 8px; }
   body.analyzer-floating #analyzerFrame .instrument-controls { grid-template-columns: 1fr; }
+
+  body.analyzer-floating.analyzer-minimized #analyzerFrame {
+    width: 100vw;
+    max-height: none;
+  }
+  body.analyzer-floating.analyzer-minimized #analyzerFrame .transport {
+    padding-right: 82px;
+  }
+  body.analyzer-floating.analyzer-minimized #analyzerFrame .level-control {
+    display: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
