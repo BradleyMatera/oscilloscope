@@ -4,46 +4,76 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#090b0c" />
-  <meta name="description" content="Bradley Matera's interactive oscilloscope portfolio: a real-time Web Audio player, signal lab, and software engineering portfolio." />
-  <title>Signal // Bradley Matera</title>
+  <meta name="description" content="An interactive music player and oscilloscope built by Bradley Matera to explore audio, waveforms, frequency, phase, and real-time browser visualization." />
+  <title>Oscilloscope Music Player // Bradley Matera</title>
   <link rel="preconnect" href="https://avatars.githubusercontent.com" />
   <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./overrides.css" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
-
   <div class="noise" aria-hidden="true"></div>
+
   <header class="topbar">
-    <a class="brand" href="#instrument" aria-label="Signal home">
+    <a class="brand" href="#top" aria-label="Oscilloscope music player home">
       <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-      <span><strong>SIGNAL</strong><small>BRADLEY MATERA</small></span>
+      <span><strong>OSCILLOSCOPE</strong><small>BRADLEY MATERA</small></span>
     </a>
     <nav class="nav" aria-label="Primary navigation">
-      <a href="#instrument">Instrument</a>
-      <a href="#lab">Signal Lab</a>
-      <a href="#work">Work</a>
+      <a href="#instrument">Analyzer</a>
+      <a href="#how">How it works</a>
+      <a href="#lab">Math</a>
+      <a href="#work">Projects</a>
       <a href="#about">About</a>
     </nav>
     <div class="status-chip" id="audioStatus" role="status"><span></span> audio idle</div>
   </header>
 
   <main id="main">
-    <section class="hero section-shell" id="instrument">
-      <div class="hero-copy">
-        <p class="eyebrow">WEB AUDIO / CANVAS / SIGNAL PROCESSING</p>
-        <h1>I build software you can <em>see</em> working.</h1>
-        <p class="lede">A portfolio disguised as an oscilloscope. Load a track, paste a YouTube link, capture live audio, or synthesize a signal. The display is calculated from real samples in your browser.</p>
+    <section class="hero-new section-shell" id="top">
+      <div class="hero-main">
+        <p class="eyebrow">MUSIC PLAYER + REAL-TIME AUDIO ANALYZER</p>
+        <h1>See what sound looks like.</h1>
+        <p class="hero-summary">I built this because I wanted to explore oscilloscopes, audio visualization, and the math behind them. Pick a sound, play it, and watch the browser turn real audio samples into waveforms, frequency bars, and moving patterns.</p>
         <div class="hero-actions">
-          <button class="primary-btn" id="startDemoBtn" type="button">Start signal</button>
-          <a class="text-link" href="#work">View engineering work <span>↘</span></a>
+          <button class="primary-btn" id="startDemoBtn" type="button">Start the demo</button>
+          <a class="secondary-link" href="#instrument-controls">Use your own audio ↓</a>
+          <a class="secondary-link" href="#how">How this works ↓</a>
+        </div>
+        <div class="hero-facts" aria-label="What you can do">
+          <div><strong>1</strong><span>Choose a song, microphone, YouTube video, or generated tone.</span></div>
+          <div><strong>2</strong><span>Switch between waveform, spectrum, Lissajous, and vector views.</span></div>
+          <div><strong>3</strong><span>Change frequency and phase and watch the result change immediately.</span></div>
         </div>
       </div>
+      <aside class="why-card">
+        <span class="tiny-label">WHY I MADE THIS</span>
+        <h2>I wanted to understand the concept by building it.</h2>
+        <p>That is really the reason. Instead of only reading about waveforms, FFTs, frequency ratios, phase, and Lissajous figures, I wanted one place where I could change the numbers and see what actually happens.</p>
+        <p>It also became a frontend experiment: audio input, browser APIs, Canvas rendering, controls, responsive UI, and a portfolio all working in the same page.</p>
+        <a href="#instrument" class="text-link">Open the analyzer ↓</a>
+      </aside>
+    </section>
 
-      <div class="instrument-frame" aria-label="Audio oscilloscope instrument">
+    <section class="analyzer-stage section-shell" id="instrument" aria-labelledby="analyzer-title">
+      <div class="analyzer-stage-head">
+        <div>
+          <p class="eyebrow">THE MAIN TOOL</p>
+          <h2 id="analyzer-title">Real-time analyzer</h2>
+          <p>This stays with you while you scroll. All controls that change the visualization are kept here.</p>
+        </div>
+        <p class="analyzer-tip">Tip: scroll past it and it becomes a floating player.</p>
+      </div>
+
+      <div class="instrument-frame" id="analyzerFrame" aria-label="Audio oscilloscope instrument">
         <div class="instrument-head">
           <div>
-            <span class="tiny-label">REALTIME ANALYZER</span>
+            <span class="tiny-label">REAL-TIME AUDIO ANALYZER</span>
             <strong id="sourceLabel">SYNTH / STANDBY</strong>
+          </div>
+          <div class="instrument-head-actions">
+            <button class="mini-tool-btn" id="analyzerControlsToggle" type="button" aria-expanded="false">Controls</button>
+            <button class="mini-tool-btn" id="floatAnalyzerBtn" type="button" aria-pressed="true">Float: on</button>
           </div>
           <div class="readouts" aria-label="Audio readouts">
             <span><small>RMS</small><b id="rmsReadout">-∞</b></span>
@@ -61,12 +91,12 @@
           </div>
           <div class="scope-empty" id="scopeEmpty">
             <strong>NO SIGNAL</strong>
-            <span>start the synth, load audio, or capture an input</span>
+            <span>start the demo, choose audio, or open a live input</span>
           </div>
         </div>
 
         <div class="mode-strip" role="group" aria-label="Visualization mode">
-          <button class="mode-btn active" data-mode="time" type="button">Time</button>
+          <button class="mode-btn active" data-mode="time" type="button">Waveform</button>
           <button class="mode-btn" data-mode="spectrum" type="button">Spectrum</button>
           <button class="mode-btn" data-mode="lissajous" type="button">Lissajous</button>
           <button class="mode-btn" data-mode="particles" type="button">Vector field</button>
@@ -80,129 +110,138 @@
           </div>
           <label class="level-control">LEVEL <input id="gainControl" type="range" min="0" max="1" value="0.55" step="0.01" /></label>
         </div>
+
+        <div class="instrument-controls" id="instrument-controls">
+          <section class="analyzer-control-group" aria-labelledby="input-control-title">
+            <div class="control-group-title">
+              <span class="tiny-label">INPUT</span>
+              <h3 id="input-control-title">Choose what to analyze</h3>
+            </div>
+
+            <form id="youtubeForm" class="url-form compact-url-form">
+              <label class="sr-only" for="youtubeUrl">YouTube URL</label>
+              <input id="youtubeUrl" type="url" placeholder="Paste a YouTube link" autocomplete="off" />
+              <button type="submit">Load</button>
+            </form>
+
+            <div class="input-button-row">
+              <label class="file-btn">Audio file<input id="audioFile" type="file" accept="audio/*" /></label>
+              <button id="micBtn" class="secondary-btn" type="button">Microphone</button>
+              <button id="synthBtn" class="secondary-btn" type="button">Generated tones</button>
+            </div>
+            <audio id="audioElement" preload="metadata"></audio>
+
+            <div id="youtubeStage" class="youtube-stage analyzer-youtube" hidden>
+              <iframe id="youtubeFrame" title="YouTube player" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+              <button id="captureTabBtn" class="secondary-btn" type="button">Analyze tab audio</button>
+              <p class="microcopy">Choose this browser tab and turn on <strong>Share tab audio</strong> when your browser asks.</p>
+            </div>
+            <div class="notice" id="notice" role="status" aria-live="polite"></div>
+          </section>
+
+          <section class="analyzer-control-group" aria-labelledby="signal-control-title">
+            <div class="control-group-title">
+              <span class="tiny-label">GENERATED SIGNAL</span>
+              <h3 id="signal-control-title">Change the tones and the picture</h3>
+            </div>
+            <div class="compact-knobs">
+              <label class="control-block"><span>FREQUENCY A <b id="freqAValue">220 Hz</b></span><input id="freqA" type="range" min="40" max="880" value="220" step="1" /></label>
+              <label class="control-block"><span>FREQUENCY B <b id="freqBValue">330 Hz</b></span><input id="freqB" type="range" min="40" max="880" value="330" step="1" /></label>
+              <label class="control-block"><span>PHASE B <b id="phaseValue">1.57 rad</b></span><input id="phase" type="range" min="0" max="6.283" value="1.571" step="0.01" /></label>
+              <label class="control-block"><span>TRAIL <b id="trailValue">72%</b></span><input id="trail" type="range" min="0.05" max="1" value="0.72" step="0.01" /></label>
+            </div>
+            <div class="preset-row" aria-label="Frequency ratio presets">
+              <button type="button" data-ratio="1:1">1:1</button>
+              <button type="button" data-ratio="2:3">2:3</button>
+              <button type="button" data-ratio="3:4">3:4</button>
+              <button type="button" data-ratio="3:5">3:5</button>
+            </div>
+            <button id="sendToScopeBtn" class="primary-btn compact-action" type="button">Play these tones in Lissajous view</button>
+          </section>
+        </div>
       </div>
     </section>
 
-    <section class="source-console section-shell" aria-labelledby="source-heading">
-      <div class="section-index">01 / SOURCE</div>
-      <div class="section-heading">
-        <p class="eyebrow">INPUT ROUTING</p>
-        <h2 id="source-heading">Bring your own signal.</h2>
-        <p>Each input is routed into the same analysis graph. Nothing is uploaded by this site.</p>
+    <section class="how section-shell" id="how">
+      <div class="section-index">01 / HOW IT WORKS</div>
+      <div class="section-heading plain-heading">
+        <p class="eyebrow">FROM SOUND TO SCREEN</p>
+        <h2>The browser reads the audio and draws what it finds.</h2>
+        <p>There is no pre-made animation pretending to match the music. When an audio source is connected, the visualizer reads real sample data from the browser's Web Audio API.</p>
       </div>
-
-      <div class="source-grid">
-        <article class="source-card featured">
-          <span class="card-num">A</span>
-          <div>
-            <h3>YouTube</h3>
-            <p>Paste a video URL, play it here, then capture tab audio for genuine sample analysis.</p>
-          </div>
-          <form id="youtubeForm" class="url-form">
-            <label class="sr-only" for="youtubeUrl">YouTube URL</label>
-            <input id="youtubeUrl" type="url" placeholder="https://youtube.com/watch?v=…" autocomplete="off" />
-            <button type="submit">Load</button>
-          </form>
-          <div id="youtubeStage" class="youtube-stage" hidden>
-            <iframe id="youtubeFrame" title="YouTube player" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
-            <button id="captureTabBtn" class="secondary-btn" type="button">Analyze tab audio</button>
-            <p class="microcopy">When your browser asks what to share, choose the tab containing this player and enable <strong>Share tab audio</strong>.</p>
-          </div>
-        </article>
-
-        <article class="source-card">
-          <span class="card-num">B</span>
-          <div><h3>Audio file</h3><p>Decode a local MP3, WAV, AAC, OGG, or browser-supported file directly.</p></div>
-          <label class="file-btn">Choose audio<input id="audioFile" type="file" accept="audio/*" /></label>
-          <audio id="audioElement" preload="metadata"></audio>
-        </article>
-
-        <article class="source-card">
-          <span class="card-num">C</span>
-          <div><h3>Live input</h3><p>Use a microphone or another live MediaStream for immediate visualization.</p></div>
-          <button id="micBtn" class="secondary-btn" type="button">Use microphone</button>
-        </article>
-
-        <article class="source-card">
-          <span class="card-num">D</span>
-          <div><h3>Synthesizer</h3><p>Two oscillators create a deterministic signal for exploring phase and frequency ratios.</p></div>
-          <button id="synthBtn" class="secondary-btn" type="button">Route synth</button>
-        </article>
+      <div class="how-grid">
+        <article><span>1</span><h3>Get audio</h3><p>Use a local music file, your microphone, captured tab audio, or the built-in two-tone generator.</p></article>
+        <article><span>2</span><h3>Measure it</h3><p>The Web Audio API gives the page waveform samples and frequency data while the sound is playing.</p></article>
+        <article><span>3</span><h3>Draw it</h3><p>Canvas redraws the analyzer every frame. The different views use the same audio data in different ways.</p></article>
+        <article><span>4</span><h3>Change it</h3><p>The signal controls change frequency, phase, and trail strength so you can see how the result changes.</p></article>
       </div>
-      <div class="notice" id="notice" role="status" aria-live="polite"></div>
     </section>
 
     <section class="signal-lab section-shell" id="lab">
-      <div class="section-index">02 / LAB</div>
-      <div class="section-heading">
-        <p class="eyebrow">MATHEMATICS AS UI</p>
-        <h2>Change the equation. Change the image.</h2>
-        <p>The Lissajous view plots one periodic signal against another rather than plotting amplitude against time.</p>
+      <div class="section-index">02 / THE MATH</div>
+      <div class="section-heading plain-heading">
+        <p class="eyebrow">WHY THE SHAPES CHANGE</p>
+        <h2>Two tones can turn into a shape.</h2>
+        <p>The Lissajous view uses one signal for the horizontal position and another for the vertical position. Change their frequencies or phase in the analyzer above and this math updates with them.</p>
       </div>
 
-      <div class="lab-layout">
+      <div class="lab-layout lab-readout-only">
         <div class="equation-panel">
           <div class="equation"><span>x(t)</span> = A sin(<b id="eqFreqA">220</b> · 2πt + <b id="eqPhaseA">0</b>)</div>
           <div class="equation"><span>y(t)</span> = B sin(<b id="eqFreqB">330</b> · 2πt + <b id="eqPhaseB">π/2</b>)</div>
-          <p>For frequencies <strong>fₓ:fᵧ = <span id="ratioReadout">2:3</span></strong>, the curve closes into a stable figure when the ratio is rational. Phase rotates and reshapes the figure without changing that ratio.</p>
-          <button id="sendToScopeBtn" class="primary-btn" type="button">Send math to scope</button>
+          <p>Current frequency ratio: <strong><span id="ratioReadout">2:3</span></strong>. Simple whole-number ratios repeat into stable patterns. Phase changes where the second wave starts, which changes the shape you see.</p>
+          <a class="text-link" href="#instrument-controls">Change these values in the analyzer ↑</a>
         </div>
-
-        <div class="knob-grid">
-          <label class="control-block"><span>FREQUENCY A <b id="freqAValue">220 Hz</b></span><input id="freqA" type="range" min="40" max="880" value="220" step="1" /></label>
-          <label class="control-block"><span>FREQUENCY B <b id="freqBValue">330 Hz</b></span><input id="freqB" type="range" min="40" max="880" value="330" step="1" /></label>
-          <label class="control-block"><span>PHASE B <b id="phaseValue">1.57 rad</b></span><input id="phase" type="range" min="0" max="6.283" value="1.571" step="0.01" /></label>
-          <label class="control-block"><span>TRAIL <b id="trailValue">72%</b></span><input id="trail" type="range" min="0.05" max="1" value="0.72" step="0.01" /></label>
-          <div class="preset-row" aria-label="Frequency ratio presets">
-            <button type="button" data-ratio="1:1">1:1</button><button type="button" data-ratio="2:3">2:3</button><button type="button" data-ratio="3:4">3:4</button><button type="button" data-ratio="3:5">3:5</button>
-          </div>
+        <div class="math-example" aria-label="Simple Lissajous explanation">
+          <strong>What to try</strong>
+          <p>Start the generated tones, switch to <b>Lissajous</b>, then try the 1:1, 2:3, 3:4, and 3:5 buttons. After that, move the phase slider slowly and watch the same frequency ratio produce different shapes.</p>
         </div>
       </div>
 
       <div class="concept-grid">
-        <article><small>01</small><h3>Waveform</h3><p>Time-domain samples show pressure/amplitude over time. This is the classic oscilloscope view.</p><code>y = amplitude(t)</code></article>
-        <article><small>02</small><h3>FFT</h3><p>A Fast Fourier Transform decomposes a window of samples into frequency bins.</p><code>Xₖ = Σ xₙe⁻ⁱ²πkn/N</code></article>
-        <article><small>03</small><h3>Lissajous</h3><p>Plot left vs. right, or two generated channels. Correlation, phase, and ratios become geometry.</p><code>(x(t), y(t))</code></article>
-        <article><small>04</small><h3>RMS / Peak</h3><p>RMS approximates signal energy; peak reports the largest instantaneous absolute sample.</p><code>RMS = √(Σx²/N)</code></article>
+        <article><small>01</small><h3>Waveform</h3><p>Shows the audio level changing over time. This is the classic oscilloscope view.</p><code>y = amplitude(t)</code></article>
+        <article><small>02</small><h3>Spectrum</h3><p>Breaks the sound into frequency ranges so you can see where the bass, mids, and highs are.</p><code>FFT → frequency bins</code></article>
+        <article><small>03</small><h3>Lissajous</h3><p>Plots one channel against another. Frequency ratio and phase become visible as geometry.</p><code>(x(t), y(t))</code></article>
+        <article><small>04</small><h3>RMS / Peak</h3><p>RMS is a useful measure of signal level. Peak is the strongest sample found at that moment.</p><code>RMS = √(Σx²/N)</code></article>
       </div>
     </section>
 
     <section class="work section-shell" id="work">
-      <div class="section-index">03 / WORK</div>
-      <div class="section-heading split-heading">
-        <div><p class="eyebrow">SELECTED ENGINEERING</p><h2>Systems, interfaces, and things that actually run.</h2></div>
+      <div class="section-index">03 / PROJECTS</div>
+      <div class="section-heading split-heading plain-heading">
+        <div><p class="eyebrow">OTHER THINGS I HAVE BUILT</p><h2>More of my work.</h2></div>
         <a class="text-link" href="https://github.com/BradleyMatera" target="_blank" rel="noreferrer">All GitHub repositories ↗</a>
       </div>
 
       <div class="project-list">
         <a class="project-row" href="https://github.com/BradleyMatera/ProjectHub" target="_blank" rel="noreferrer">
-          <span class="project-index">001</span><div><h3>ProjectHub / Scout</h3><p>Embeddable recruiter assistant · grounded retrieval · local-first AI direction</p></div><div class="project-tags"><span>AI</span><span>RAG</span><span>Systems</span></div><span class="project-arrow">↗</span>
+          <span class="project-index">001</span><div><h3>ProjectHub / Scout</h3><p>An embeddable assistant that answers recruiter questions using verified project and career information.</p></div><div class="project-tags"><span>AI</span><span>RAG</span><span>Systems</span></div><span class="project-arrow">↗</span>
         </a>
         <a class="project-row" href="https://github.com/BradleyMatera/GameTesting" target="_blank" rel="noreferrer">
-          <span class="project-index">002</span><div><h3>GameTesting</h3><p>Babylon.js / WebGPU experiments focused on interactive 3D and production QA</p></div><div class="project-tags"><span>WebGPU</span><span>Babylon.js</span></div><span class="project-arrow">↗</span>
+          <span class="project-index">002</span><div><h3>GameTesting</h3><p>Browser 3D experiments using Babylon.js and WebGPU, including testing and production cleanup work.</p></div><div class="project-tags"><span>WebGPU</span><span>Babylon.js</span></div><span class="project-arrow">↗</span>
         </a>
         <a class="project-row" href="https://github.com/BradleyMatera/PCS_LLC" target="_blank" rel="noreferrer">
-          <span class="project-index">003</span><div><h3>PCS Truck Sales</h3><p>Fast static business site built for local discovery, inventory, accessibility, and SEO</p></div><div class="project-tags"><span>Frontend</span><span>SEO</span></div><span class="project-arrow">↗</span>
+          <span class="project-index">003</span><div><h3>PCS Truck Sales</h3><p>A small-business truck sales site built around inventory, local search, accessibility, and fast loading.</p></div><div class="project-tags"><span>Frontend</span><span>SEO</span></div><span class="project-arrow">↗</span>
         </a>
         <a class="project-row" href="https://github.com/BradleyMatera/oscilloscope" target="_blank" rel="noreferrer">
-          <span class="project-index">004</span><div><h3>Signal / Oscilloscope</h3><p>This browser-native audio lab: Web Audio routing, FFT analysis, Canvas rendering, and interaction design</p></div><div class="project-tags"><span>Web Audio</span><span>Canvas</span></div><span class="project-arrow">↗</span>
+          <span class="project-index">004</span><div><h3>Oscilloscope Music Player</h3><p>This project: browser audio input, real-time analysis, Canvas graphics, signal controls, and the UI around it.</p></div><div class="project-tags"><span>Web Audio</span><span>Canvas</span></div><span class="project-arrow">↗</span>
         </a>
       </div>
     </section>
 
     <section class="about section-shell" id="about">
-      <div class="section-index">04 / PROFILE</div>
+      <div class="section-index">04 / ABOUT ME</div>
       <div class="profile-grid">
         <div class="profile-intro">
           <img src="https://avatars.githubusercontent.com/u/162147754?v=4" alt="Bradley Matera" />
-          <div><p class="eyebrow">BRADLEY MATERA</p><h2>Full-Stack Software Engineer</h2><p>I work across frontend engineering, cloud systems, support workflows, and AI-assisted tooling. I like products where the interface exposes how the system works instead of hiding it.</p></div>
+          <div><p class="eyebrow">BRADLEY MATERA</p><h2>Full-Stack Software Engineer</h2><p>I build web software, work with cloud systems, troubleshoot technical problems, and experiment with AI tools. A lot of my personal projects start the same way this one did: I want to understand something, so I build a working version of it.</p></div>
         </div>
 
         <div class="profile-columns">
           <div><small>NOW</small><h3>ERP Support Specialist</h3><p>Helm Group · Freeport, Illinois<br/>Starting September 2026</p></div>
-          <div><small>PREVIOUS</small><h3>AWS Cloud Support Associate Intern</h3><p>Amazon Web Services · 2025<br/>Cloud support engineering / AWS infrastructure</p></div>
+          <div><small>PREVIOUS</small><h3>AWS Cloud Support Associate Intern</h3><p>Amazon Web Services · 2025<br/>Cloud support engineering and AWS infrastructure</p></div>
           <div><small>EDUCATION</small><h3>B.S. Web Development</h3><p>Full Sail University · 2025</p></div>
-          <div><small>CERTIFIED</small><h3>AWS x2</h3><p>Solutions Architect – Associate<br/>AI Practitioner</p></div>
+          <div><small>CERTIFICATIONS</small><h3>AWS x2</h3><p>Solutions Architect – Associate<br/>AI Practitioner</p></div>
         </div>
       </div>
 
@@ -212,8 +251,8 @@
     </section>
 
     <section class="contact section-shell">
-      <p class="eyebrow">OUTPUT / CONNECT</p>
-      <h2>Want to build something that feels alive?</h2>
+      <p class="eyebrow">CONTACT</p>
+      <h2>Find me or the code.</h2>
       <div class="contact-links">
         <a href="mailto:hello@bradleymatera.dev">hello@bradleymatera.dev ↗</a>
         <a href="https://github.com/BradleyMatera" target="_blank" rel="noreferrer">GitHub ↗</a>
@@ -221,8 +260,9 @@
     </section>
   </main>
 
-  <footer class="footer section-shell"><span>© 2026 BRADLEY MATERA</span><span>CALCULATED IN YOUR BROWSER · NO AUDIO UPLOAD</span><a href="#instrument">BACK TO SIGNAL ↑</a></footer>
+  <footer class="footer section-shell"><span>© 2026 BRADLEY MATERA</span><span>AUDIO IS ANALYZED IN YOUR BROWSER</span><a href="#top">BACK TO TOP ↑</a></footer>
 
   <script type="module" src="./app.js"></script>
+  <script src="./ui.js" defer></script>
 </body>
 </html>
