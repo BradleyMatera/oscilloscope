@@ -1,4 +1,4 @@
-name: Deploy oscilloscope portfolio to Pages
+name: Deploy Oscilloscope Music Lab to Pages
 
 on:
   push:
