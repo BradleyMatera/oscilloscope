@@ -21,15 +21,32 @@
   const floatButton = document.getElementById('floatAnalyzerBtn');
   const controlsButton = document.getElementById('analyzerControlsToggle');
   const controls = document.getElementById('instrument-controls');
+  const actions = frame?.querySelector('.instrument-head-actions');
 
-  if (!stage || !frame || !floatButton || !controlsButton || !controls) return;
+  if (!stage || !frame || !floatButton || !controlsButton || !controls || !actions) return;
+
+  const minimizeButton = document.createElement('button');
+  minimizeButton.className = 'mini-tool-btn analyzer-minimize-btn';
+  minimizeButton.id = 'minimizeAnalyzerBtn';
+  minimizeButton.type = 'button';
+  minimizeButton.textContent = 'Minimize';
+  minimizeButton.setAttribute('aria-pressed', 'false');
+  minimizeButton.setAttribute('aria-label', 'Minimize floating analyzer');
+  actions.append(minimizeButton);
 
   let floatEnabled = sessionStorage.getItem('oscilloscope-float') !== 'off';
+  let minimized = sessionStorage.getItem('oscilloscope-minimized') === 'on';
   let ticking = false;
 
   function setFloatButton() {
     floatButton.textContent = `Float: ${floatEnabled ? 'on' : 'off'}`;
     floatButton.setAttribute('aria-pressed', String(floatEnabled));
+  }
+
+  function setMinimizeButton() {
+    minimizeButton.textContent = minimized ? 'Expand' : 'Minimize';
+    minimizeButton.setAttribute('aria-pressed', String(minimized));
+    minimizeButton.setAttribute('aria-label', minimized ? 'Expand floating analyzer' : 'Minimize floating analyzer');
   }
 
   function updateFloatingState() {
@@ -39,6 +56,7 @@
     const shouldFloat = floatEnabled && hasPassedAnalyzer;
 
     body.classList.toggle('analyzer-floating', shouldFloat);
+    body.classList.toggle('analyzer-minimized', shouldFloat && minimized);
 
     if (!shouldFloat) {
       body.classList.remove('analyzer-controls-open');
@@ -60,8 +78,26 @@
     updateFloatingState();
   });
 
+  minimizeButton.addEventListener('click', () => {
+    minimized = !minimized;
+    sessionStorage.setItem('oscilloscope-minimized', minimized ? 'on' : 'off');
+    if (minimized) {
+      body.classList.remove('analyzer-controls-open');
+      controlsButton.setAttribute('aria-expanded', 'false');
+      controlsButton.textContent = 'Controls';
+    }
+    setMinimizeButton();
+    updateFloatingState();
+  });
+
   controlsButton.addEventListener('click', () => {
     if (body.classList.contains('analyzer-floating')) {
+      if (body.classList.contains('analyzer-minimized')) {
+        minimized = false;
+        sessionStorage.setItem('oscilloscope-minimized', 'off');
+        setMinimizeButton();
+        updateFloatingState();
+      }
       const open = !body.classList.contains('analyzer-controls-open');
       body.classList.toggle('analyzer-controls-open', open);
       controlsButton.setAttribute('aria-expanded', String(open));
@@ -76,5 +112,6 @@
   window.addEventListener('resize', requestFloatingUpdate);
 
   setFloatButton();
+  setMinimizeButton();
   updateFloatingState();
 })();
