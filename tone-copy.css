@@ -1,0 +1,49 @@
+.hero-button-link{display:inline-flex;align-items:center;text-decoration:none}
+.tone-copy,.views,.science,.architecture{padding:105px 0;border-top:1px solid var(--line)}
+.tone-copy-workbench{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);background:#0b0e0f}
+.tone-copy-panel{min-width:0;padding:clamp(24px,3vw,42px)}
+.tone-copy-panel+.tone-copy-panel{border-left:1px solid var(--line)}
+.tone-copy-panel h3{margin:8px 0 20px;font-size:clamp(22px,2.3vw,32px);letter-spacing:-.025em}
+.tone-source-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tone-file-picker{min-height:46px;display:flex;align-items:center;justify-content:center;border:1px solid var(--signal);background:var(--signal);color:#081008;cursor:pointer;text-transform:uppercase;letter-spacing:.09em;font:800 10px var(--mono)}
+.tone-file-picker input{position:absolute;opacity:0;pointer-events:none}
+.tone-file-name{min-height:44px;display:flex;align-items:center;margin-top:18px;padding:0 13px;border:1px solid var(--line);background:#080a0b;color:var(--muted);font:10px var(--mono);overflow-wrap:anywhere}
+.tone-settings{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tone-settings label{display:grid;gap:8px;color:var(--dim);font:9px var(--mono);letter-spacing:.09em}
+.tone-settings select{min-height:44px;border:1px solid var(--line-strong);border-radius:0;background:#080a0b;color:var(--text);padding:0 12px;font:11px var(--mono)}
+.tone-build-btn{width:100%;margin-top:18px}
+.tone-build-btn:disabled{opacity:.35;cursor:not-allowed;box-shadow:none;transform:none}
+.tone-progress{display:grid;gap:8px;margin-top:18px;color:var(--muted);font:10px var(--mono)}
+.tone-progress-bar{height:5px;background:#202725;overflow:hidden}
+.tone-progress-bar span{display:block;width:0;height:100%;background:var(--signal);transition:width .16s linear}
+.tone-results{margin-top:28px;border:1px solid var(--line);background:#0b0e0f}
+.tone-stats{display:grid;grid-template-columns:repeat(6,1fr);border-bottom:1px solid var(--line)}
+.tone-stats>div{min-width:0;display:grid;gap:7px;padding:16px;border-right:1px solid var(--line)}
+.tone-stats>div:last-child{border-right:0}
+.tone-stats small{color:var(--dim);font:8px var(--mono);letter-spacing:.09em}
+.tone-stats strong{color:var(--signal);font:11px var(--mono);font-weight:500;overflow-wrap:anywhere}
+.tone-audio-grid{display:grid;grid-template-columns:1fr 1fr}
+.tone-audio-grid>div{padding:22px}
+.tone-audio-grid>div+div{border-left:1px solid var(--line)}
+.tone-audio-grid audio{display:block;width:100%;margin-top:12px}
+.tone-result-actions{display:flex;gap:10px;padding:0 22px 22px}
+.download-link{text-decoration:none}
+.view-grid{grid-template-columns:repeat(4,1fr)}
+.science-detail-grid{display:grid;grid-template-columns:repeat(4,1fr);margin-top:28px;border-top:1px solid var(--line);border-left:1px solid var(--line)}
+.science-detail-grid article{min-height:230px;padding:24px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.science-detail-grid h3{margin:0 0 14px;font-size:23px}
+.science-detail-grid p{margin:0;color:var(--muted);font-size:14px;line-height:1.7}
+.science-detail-grid code,.fft-math code,.math-example code{color:var(--signal);font-family:var(--mono)}
+.fft-math{display:grid;grid-template-columns:repeat(3,1fr);margin-top:28px;border:1px solid var(--line)}
+.fft-math article{min-width:0;padding:28px}
+.fft-math article+article{border-left:1px solid var(--line)}
+.fft-math code{display:block;margin:18px 0;font-size:clamp(14px,1.5vw,20px);overflow-wrap:anywhere}
+.fft-math p{margin:0;color:var(--muted);font-size:14px;line-height:1.65}
+.pipeline{display:grid;grid-template-columns:1fr auto 1fr auto 1fr auto 1fr;align-items:stretch;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.pipeline div{display:grid;align-content:center;gap:10px;min-height:180px;padding:24px}
+.pipeline strong{font:11px var(--mono);color:var(--signal);letter-spacing:.09em}
+.pipeline span{color:var(--muted);font-size:14px;line-height:1.6}
+.pipeline i{display:grid;place-content:center;color:var(--dim);font:18px var(--mono);font-style:normal}
+.footer{margin-top:0}
+@media(max-width:1100px){.tone-stats{grid-template-columns:repeat(3,1fr)}.tone-stats>div:nth-child(3){border-right:0}.tone-stats>div:nth-child(-n+3){border-bottom:1px solid var(--line)}.science-detail-grid{grid-template-columns:1fr 1fr}.pipeline{grid-template-columns:1fr}.pipeline i{min-height:38px;transform:rotate(90deg)}.pipeline div{min-height:120px;border-top:1px solid var(--line)}.pipeline div:first-child{border-top:0}}
+@media(max-width:760px){.tone-copy-workbench{grid-template-columns:1fr}.tone-copy-panel+.tone-copy-panel{border-left:0;border-top:1px solid var(--line)}.tone-source-actions,.tone-settings{grid-template-columns:1fr}.tone-stats{grid-template-columns:1fr 1fr}.tone-stats>div,.tone-stats>div:nth-child(3){border-right:1px solid var(--line);border-bottom:1px solid var(--line)}.tone-stats>div:nth-child(2n){border-right:0}.tone-audio-grid{grid-template-columns:1fr}.tone-audio-grid>div+div{border-left:0;border-top:1px solid var(--line)}.tone-result-actions{flex-direction:column}.tone-result-actions>*{width:100%}.science-detail-grid,.fft-math{grid-template-columns:1fr}.fft-math article+article{border-left:0;border-top:1px solid var(--line)}.view-grid{grid-template-columns:1fr}.nav a:nth-last-child(-n+2){display:none}}
