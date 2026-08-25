@@ -4,9 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#090b0c" />
-  <meta name="description" content="An interactive music player and oscilloscope built by Bradley Matera to explore audio, waveforms, frequency, phase, and real-time browser visualization." />
-  <title>Oscilloscope Music Player // Bradley Matera</title>
-  <link rel="preconnect" href="https://avatars.githubusercontent.com" />
+  <meta name="description" content="A browser oscilloscope, real-time music analyzer, and full-complex-spectrum Tone Copy experiment for exploring waveforms, FFTs, phase, and spectral resynthesis." />
+  <title>Oscilloscope Music Lab</title>
   <link rel="stylesheet" href="./styles.css" />
   <link rel="stylesheet" href="./overrides.css" />
 </head>
@@ -15,16 +14,16 @@
   <div class="noise" aria-hidden="true"></div>
 
   <header class="topbar">
-    <a class="brand" href="#top" aria-label="Oscilloscope music player home">
+    <a class="brand" href="#top" aria-label="Oscilloscope Music Lab home">
       <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-      <span><strong>OSCILLOSCOPE</strong><small>BRADLEY MATERA</small></span>
+      <span><strong>OSCILLOSCOPE</strong><small>MUSIC LAB</small></span>
     </a>
     <nav class="nav" aria-label="Primary navigation">
       <a href="#instrument">Analyzer</a>
-      <a href="#how">How it works</a>
-      <a href="#lab">Math</a>
-      <a href="#work">Projects</a>
-      <a href="#about">About</a>
+      <a href="#tone-copy">Tone Copy</a>
+      <a href="#views">Views</a>
+      <a href="#science">Science</a>
+      <a href="#math">Math</a>
     </nav>
     <div class="status-chip" id="audioStatus" role="status"><span></span> audio idle</div>
   </header>
@@ -32,37 +31,37 @@
   <main id="main">
     <section class="hero-new section-shell" id="top">
       <div class="hero-main">
-        <p class="eyebrow">MUSIC PLAYER + REAL-TIME AUDIO ANALYZER</p>
-        <h1>See what sound looks like.</h1>
-        <p class="hero-summary">I built this because I wanted to explore oscilloscopes, audio visualization, and the math behind them. Pick a sound, play it, and watch the browser turn real audio samples into waveforms, frequency bars, and moving patterns.</p>
+        <p class="eyebrow">OSCILLOSCOPE · MUSIC ANALYZER · SPECTRAL RESYNTHESIS</p>
+        <h1>Take sound apart. See it. Rebuild it.</h1>
+        <p class="hero-summary">I built this because I wanted to explore what an oscilloscope and frequency analyzer are actually doing to music. Feed it real audio, inspect the signal in different ways, change generated waves, or rebuild a song from the complex frequency data measured from the song itself.</p>
         <div class="hero-actions">
-          <button class="primary-btn" id="startDemoBtn" type="button">Start the demo</button>
-          <a class="secondary-link" href="#instrument-controls">Use your own audio ↓</a>
-          <a class="secondary-link" href="#how">How this works ↓</a>
+          <button class="primary-btn" id="startDemoBtn" type="button">Start generated demo</button>
+          <a class="secondary-link" href="#instrument">Analyze audio ↓</a>
+          <a class="secondary-link" href="#tone-copy">Build a Tone Copy ↓</a>
         </div>
-        <div class="hero-facts" aria-label="What you can do">
-          <div><strong>1</strong><span>Choose a song, microphone, YouTube video, or generated tone.</span></div>
-          <div><strong>2</strong><span>Switch between waveform, spectrum, Lissajous, and vector views.</span></div>
-          <div><strong>3</strong><span>Change frequency and phase and watch the result change immediately.</span></div>
+        <div class="hero-facts" aria-label="Core features">
+          <div><strong>1</strong><span>Analyze an audio file, microphone, generated signal, or captured browser-tab audio.</span></div>
+          <div><strong>2</strong><span>See waveform, spectrum, stereo Lissajous, RMS, peak level, and audio-reactive vector data.</span></div>
+          <div><strong>3</strong><span>Run a full complex FFT across a song and resynthesize the measured frequency and phase data back into audio.</span></div>
         </div>
       </div>
       <aside class="why-card">
-        <span class="tiny-label">WHY I MADE THIS</span>
+        <span class="tiny-label">WHY I BUILT IT</span>
         <h2>I wanted to understand the concept by building it.</h2>
-        <p>That is really the reason. Instead of only reading about waveforms, FFTs, frequency ratios, phase, and Lissajous figures, I wanted one place where I could change the numbers and see what actually happens.</p>
-        <p>It also became a frontend experiment: audio input, browser APIs, Canvas rendering, controls, responsive UI, and a portfolio all working in the same page.</p>
-        <a href="#instrument" class="text-link">Open the analyzer ↓</a>
+        <p>Reading that a sound can be represented by frequencies is one thing. Watching the waveform, seeing the spectrum move, changing phase, and then rebuilding a song from FFT data makes the idea concrete.</p>
+        <p>This page is one connected experiment covering the audio input, the visualizer, the signal generator, the Fourier math, and the resynthesis.</p>
+        <a href="#science" class="text-link">See the signal path ↓</a>
       </aside>
     </section>
 
     <section class="analyzer-stage section-shell" id="instrument" aria-labelledby="analyzer-title">
       <div class="analyzer-stage-head">
         <div>
-          <p class="eyebrow">THE MAIN TOOL</p>
+          <p class="eyebrow">LIVE AUDIO TOOL</p>
           <h2 id="analyzer-title">Real-time analyzer</h2>
-          <p>This stays with you while you scroll. All controls that change the visualization are kept here.</p>
+          <p>Choose a source, press play, then switch views. Every control that changes the analyzer stays inside the analyzer.</p>
         </div>
-        <p class="analyzer-tip">Tip: scroll past it and it becomes a floating player.</p>
+        <p class="analyzer-tip">Scroll past it and it becomes a floating player. Use Float: off if you want it to stay in place.</p>
       </div>
 
       <div class="instrument-frame" id="analyzerFrame" aria-label="Audio oscilloscope instrument">
@@ -114,35 +113,32 @@
         <div class="instrument-controls" id="instrument-controls">
           <section class="analyzer-control-group" aria-labelledby="input-control-title">
             <div class="control-group-title">
-              <span class="tiny-label">INPUT</span>
+              <span class="tiny-label">AUDIO SOURCE</span>
               <h3 id="input-control-title">Choose what to analyze</h3>
             </div>
-
             <form id="youtubeForm" class="url-form compact-url-form">
               <label class="sr-only" for="youtubeUrl">YouTube URL</label>
               <input id="youtubeUrl" type="url" placeholder="Paste a YouTube link" autocomplete="off" />
               <button type="submit">Load</button>
             </form>
-
             <div class="input-button-row">
               <label class="file-btn">Audio file<input id="audioFile" type="file" accept="audio/*" /></label>
               <button id="micBtn" class="secondary-btn" type="button">Microphone</button>
               <button id="synthBtn" class="secondary-btn" type="button">Generated tones</button>
             </div>
             <audio id="audioElement" preload="metadata"></audio>
-
             <div id="youtubeStage" class="youtube-stage analyzer-youtube" hidden>
               <iframe id="youtubeFrame" title="YouTube player" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
               <button id="captureTabBtn" class="secondary-btn" type="button">Analyze tab audio</button>
-              <p class="microcopy">Choose this browser tab and turn on <strong>Share tab audio</strong> when your browser asks.</p>
+              <p class="microcopy">Play the video, click Analyze tab audio, choose the tab containing the player, and enable Share tab audio.</p>
             </div>
             <div class="notice" id="notice" role="status" aria-live="polite"></div>
           </section>
 
           <section class="analyzer-control-group" aria-labelledby="signal-control-title">
             <div class="control-group-title">
-              <span class="tiny-label">GENERATED SIGNAL</span>
-              <h3 id="signal-control-title">Change the tones and the picture</h3>
+              <span class="tiny-label">SIGNAL GENERATOR</span>
+              <h3 id="signal-control-title">Change the waves</h3>
             </div>
             <div class="compact-knobs">
               <label class="control-block"><span>FREQUENCY A <b id="freqAValue">220 Hz</b></span><input id="freqA" type="range" min="40" max="880" value="220" step="1" /></label>
@@ -156,113 +152,173 @@
               <button type="button" data-ratio="3:4">3:4</button>
               <button type="button" data-ratio="3:5">3:5</button>
             </div>
-            <button id="sendToScopeBtn" class="primary-btn compact-action" type="button">Play these tones in Lissajous view</button>
+            <button id="sendToScopeBtn" class="primary-btn compact-action" type="button">Play in Lissajous view</button>
           </section>
         </div>
       </div>
     </section>
 
-    <section class="how section-shell" id="how">
-      <div class="section-index">01 / HOW IT WORKS</div>
+    <section class="tone-copy section-shell" id="tone-copy" aria-labelledby="tone-copy-title">
+      <div class="section-index">01 / TONE COPY</div>
       <div class="section-heading plain-heading">
-        <p class="eyebrow">FROM SOUND TO SCREEN</p>
-        <h2>The browser reads the audio and draws what it finds.</h2>
-        <p>There is no pre-made animation pretending to match the music. When an audio source is connected, the visualizer reads real sample data from the browser's Web Audio API.</p>
+        <p class="eyebrow">FULL COMPLEX SPECTRUM</p>
+        <h2 id="tone-copy-title">Rebuild a song from its measured frequencies and phase.</h2>
+        <p>Tone Copy splits the audio into overlapping frames, transforms every frame into a complex frequency spectrum, preserves the spectrum, then converts those spectral components back into time-domain audio and joins the frames together.</p>
       </div>
-      <div class="how-grid">
-        <article><span>1</span><h3>Get audio</h3><p>Use a local music file, your microphone, captured tab audio, or the built-in two-tone generator.</p></article>
-        <article><span>2</span><h3>Measure it</h3><p>The Web Audio API gives the page waveform samples and frequency data while the sound is playing.</p></article>
-        <article><span>3</span><h3>Draw it</h3><p>Canvas redraws the analyzer every frame. The different views use the same audio data in different ways.</p></article>
-        <article><span>4</span><h3>Change it</h3><p>The signal controls change frequency, phase, and trail strength so you can see how the result changes.</p></article>
+
+      <div class="tone-copy-workbench">
+        <section class="tone-copy-panel" aria-labelledby="tone-source-title">
+          <span class="tiny-label">SOURCE</span>
+          <h3 id="tone-source-title">Give Tone Copy a song</h3>
+          <div class="tone-source-actions">
+            <label class="tone-file-picker">Choose audio file<input id="toneCopyFile" type="file" accept="audio/*" /></label>
+            <button class="secondary-btn" id="toneCaptureBtn" type="button">Record browser-tab audio</button>
+            <button class="secondary-btn" id="toneStopCaptureBtn" type="button" hidden>Stop recording</button>
+          </div>
+          <p class="microcopy">For a YouTube song, play it in the embedded player above, record the browser tab here, then stop when you have the section you want to rebuild.</p>
+          <div class="tone-file-name" id="toneSourceName">No song loaded</div>
+        </section>
+
+        <section class="tone-copy-panel" aria-labelledby="tone-build-title">
+          <span class="tiny-label">ANALYZE + REBUILD</span>
+          <h3 id="tone-build-title">Run the complex-spectrum resynthesis</h3>
+          <div class="tone-settings">
+            <label>FFT SIZE
+              <select id="toneFftSize">
+                <option value="1024">1024</option>
+                <option value="2048" selected>2048</option>
+                <option value="4096">4096</option>
+                <option value="8192">8192</option>
+              </select>
+            </label>
+            <label>OVERLAP
+              <select id="toneOverlap">
+                <option value="2">50%</option>
+                <option value="4" selected>75%</option>
+                <option value="8">87.5%</option>
+              </select>
+            </label>
+          </div>
+          <button class="primary-btn tone-build-btn" id="toneBuildBtn" type="button" disabled>Build Tone Copy</button>
+          <div class="tone-progress" id="toneProgress" aria-live="polite">
+            <div class="tone-progress-bar"><span id="toneProgressBar"></span></div>
+            <span id="toneProgressText">Waiting for audio</span>
+          </div>
+        </section>
+      </div>
+
+      <div class="tone-results" id="toneResults" hidden>
+        <div class="tone-stats" aria-label="Tone Copy analysis statistics">
+          <div><small>DURATION</small><strong id="toneDuration">0:00</strong></div>
+          <div><small>SAMPLE RATE</small><strong id="toneSampleRate">0 Hz</strong></div>
+          <div><small>CHANNELS</small><strong id="toneChannels">0</strong></div>
+          <div><small>FFT SIZE</small><strong id="toneFftReadout">0</strong></div>
+          <div><small>STFT FRAMES</small><strong id="toneFrames">0</strong></div>
+          <div><small>COMPLEX BINS</small><strong id="toneBins">0</strong></div>
+        </div>
+        <div class="tone-audio-grid">
+          <div>
+            <span class="tiny-label">SOURCE AUDIO</span>
+            <audio id="toneOriginalPlayer" controls></audio>
+          </div>
+          <div>
+            <span class="tiny-label">TONE COPY · COMPLEX-SPECTRUM RESYNTHESIS</span>
+            <audio id="toneCopyPlayer" controls></audio>
+          </div>
+        </div>
+        <div class="tone-result-actions">
+          <button class="secondary-btn" id="toneSendAnalyzerBtn" type="button">Send Tone Copy to analyzer</button>
+          <a class="secondary-btn download-link" id="toneDownloadBtn" download="tone-copy.wav">Save Tone Copy WAV</a>
+        </div>
       </div>
     </section>
 
-    <section class="signal-lab section-shell" id="lab">
-      <div class="section-index">02 / THE MATH</div>
+    <section class="views section-shell" id="views">
+      <div class="section-index">02 / VISUALIZERS</div>
       <div class="section-heading plain-heading">
-        <p class="eyebrow">WHY THE SHAPES CHANGE</p>
-        <h2>Two tones can turn into a shape.</h2>
-        <p>The Lissajous view uses one signal for the horizontal position and another for the vertical position. Change their frequencies or phase in the analyzer above and this math updates with them.</p>
+        <p class="eyebrow">ONE SIGNAL · FOUR WAYS TO LOOK AT IT</p>
+        <h2>Each view answers a different question about the same audio.</h2>
+      </div>
+      <div class="concept-grid view-grid">
+        <article><small>01</small><h3>Waveform</h3><p>Plots sample amplitude against time. You see the raw shape of the signal moving through the current analysis window.</p><code>x[n]</code></article>
+        <article><small>02</small><h3>Spectrum</h3><p>Runs an FFT and groups the frequency bins across a logarithmic frequency axis. This shows where energy is concentrated from bass through treble.</p><code>X[k] = FFT{x[n]}</code></article>
+        <article><small>03</small><h3>Lissajous</h3><p>Uses one stereo channel for X and the other for Y. Mono, width, polarity, phase, and channel relationships become geometry.</p><code>(L(t), R(t))</code></article>
+        <article><small>04</small><h3>Vector field</h3><p>Uses live time-domain samples and FFT magnitudes to drive a radial field. It is another mapping of measured signal data, not a pre-recorded animation.</p><code>position = f(X[k], x[n], t)</code></article>
+      </div>
+    </section>
+
+    <section class="science section-shell" id="science">
+      <div class="section-index">03 / SIGNAL PATH</div>
+      <div class="section-heading plain-heading">
+        <p class="eyebrow">FROM SPEAKER PRESSURE TO NUMBERS</p>
+        <h2>What the browser is measuring.</h2>
+        <p>Digital audio is a sequence of sample values taken at a fixed sample rate. The analyzer reads those samples directly from Web Audio nodes and derives the different measurements from them.</p>
+      </div>
+      <div class="how-grid science-grid">
+        <article><span>1</span><h3>Sample</h3><p>At 48 kHz, a channel contains 48,000 amplitude samples for every second of audio.</p></article>
+        <article><span>2</span><h3>Window</h3><p>An analyzer looks at a short block of neighboring samples so it can measure what the signal is doing at that moment.</p></article>
+        <article><span>3</span><h3>Transform</h3><p>The FFT changes the coordinate system from amplitude-over-time to complex frequency bins.</p></article>
+        <article><span>4</span><h3>Render or rebuild</h3><p>The bins can be drawn as a spectrum or transformed back into samples with an inverse FFT.</p></article>
+      </div>
+
+      <div class="science-detail-grid">
+        <article><h3>Magnitude</h3><p>For a complex bin <code>a + ib</code>, its magnitude is <code>√(a² + b²)</code>. That is the value most spectrum analyzers turn into bar height.</p></article>
+        <article><h3>Phase</h3><p>The same bin also has an angle <code>atan2(b, a)</code>. Tone Copy keeps the real and imaginary components, so this phase information stays in the spectrum used for reconstruction.</p></article>
+        <article><h3>Nyquist</h3><p>A sampled signal can represent frequencies up to half its sample rate. A 48 kHz file therefore has FFT bins from 0 Hz through 24 kHz.</p></article>
+        <article><h3>Overlap</h3><p>Tone Copy windows neighboring frames so they overlap, then overlap-adds the inverse transforms and normalizes the window weights at every output sample.</p></article>
+      </div>
+    </section>
+
+    <section class="signal-lab section-shell" id="math">
+      <div class="section-index">04 / MATH LAB</div>
+      <div class="section-heading plain-heading">
+        <p class="eyebrow">CHANGE THE NUMBERS · CHANGE THE SIGNAL</p>
+        <h2>Two sine waves are the simplest place to see frequency and phase.</h2>
+        <p>The generator in the analyzer creates two real Web Audio oscillators. These equations describe the values being changed by the frequency and phase controls.</p>
       </div>
 
       <div class="lab-layout lab-readout-only">
         <div class="equation-panel">
           <div class="equation"><span>x(t)</span> = A sin(<b id="eqFreqA">220</b> · 2πt + <b id="eqPhaseA">0</b>)</div>
           <div class="equation"><span>y(t)</span> = B sin(<b id="eqFreqB">330</b> · 2πt + <b id="eqPhaseB">π/2</b>)</div>
-          <p>Current frequency ratio: <strong><span id="ratioReadout">2:3</span></strong>. Simple whole-number ratios repeat into stable patterns. Phase changes where the second wave starts, which changes the shape you see.</p>
+          <p>Current frequency ratio: <strong><span id="ratioReadout">2:3</span></strong>. Whole-number frequency ratios repeat, which is why the Lissajous path closes into a stable pattern.</p>
           <a class="text-link" href="#instrument-controls">Change these values in the analyzer ↑</a>
         </div>
-        <div class="math-example" aria-label="Simple Lissajous explanation">
-          <strong>What to try</strong>
-          <p>Start the generated tones, switch to <b>Lissajous</b>, then try the 1:1, 2:3, 3:4, and 3:5 buttons. After that, move the phase slider slowly and watch the same frequency ratio produce different shapes.</p>
+        <div class="math-example">
+          <strong>PHASE IN TIME</strong>
+          <p>A phase offset can be expressed as a time offset: <code>Δt = φ / (2πf)</code>. The generator converts the Phase B slider into that delay for the second oscillator.</p>
         </div>
       </div>
 
-      <div class="concept-grid">
-        <article><small>01</small><h3>Waveform</h3><p>Shows the audio level changing over time. This is the classic oscilloscope view.</p><code>y = amplitude(t)</code></article>
-        <article><small>02</small><h3>Spectrum</h3><p>Breaks the sound into frequency ranges so you can see where the bass, mids, and highs are.</p><code>FFT → frequency bins</code></article>
-        <article><small>03</small><h3>Lissajous</h3><p>Plots one channel against another. Frequency ratio and phase become visible as geometry.</p><code>(x(t), y(t))</code></article>
-        <article><small>04</small><h3>RMS / Peak</h3><p>RMS is a useful measure of signal level. Peak is the strongest sample found at that moment.</p><code>RMS = √(Σx²/N)</code></article>
+      <div class="fft-math">
+        <article><span class="tiny-label">FORWARD DFT</span><code>X[k] = Σₙ x[n]e⁻ⁱ²πkn/N</code><p>Changes a frame of N time samples into N complex frequency coefficients.</p></article>
+        <article><span class="tiny-label">INVERSE DFT</span><code>x[n] = (1/N)Σₖ X[k]eⁱ²πkn/N</code><p>Adds those complex frequency components back together to recover time samples.</p></article>
+        <article><span class="tiny-label">RMS</span><code>RMS = √((1/N)Σₙx[n]²)</code><p>Measures the signal's average energy over the current sample block.</p></article>
       </div>
     </section>
 
-    <section class="work section-shell" id="work">
-      <div class="section-index">03 / PROJECTS</div>
-      <div class="section-heading split-heading plain-heading">
-        <div><p class="eyebrow">OTHER THINGS I HAVE BUILT</p><h2>More of my work.</h2></div>
-        <a class="text-link" href="https://github.com/BradleyMatera" target="_blank" rel="noreferrer">All GitHub repositories ↗</a>
+    <section class="architecture section-shell" id="architecture">
+      <div class="section-index">05 / HOW THE SITE IS BUILT</div>
+      <div class="section-heading plain-heading">
+        <p class="eyebrow">BROWSER AUDIO PIPELINE</p>
+        <h2>The features share one signal-processing idea.</h2>
       </div>
-
-      <div class="project-list">
-        <a class="project-row" href="https://github.com/BradleyMatera/ProjectHub" target="_blank" rel="noreferrer">
-          <span class="project-index">001</span><div><h3>ProjectHub / Scout</h3><p>An embeddable assistant that answers recruiter questions using verified project and career information.</p></div><div class="project-tags"><span>AI</span><span>RAG</span><span>Systems</span></div><span class="project-arrow">↗</span>
-        </a>
-        <a class="project-row" href="https://github.com/BradleyMatera/GameTesting" target="_blank" rel="noreferrer">
-          <span class="project-index">002</span><div><h3>GameTesting</h3><p>Browser 3D experiments using Babylon.js and WebGPU, including testing and production cleanup work.</p></div><div class="project-tags"><span>WebGPU</span><span>Babylon.js</span></div><span class="project-arrow">↗</span>
-        </a>
-        <a class="project-row" href="https://github.com/BradleyMatera/PCS_LLC" target="_blank" rel="noreferrer">
-          <span class="project-index">003</span><div><h3>PCS Truck Sales</h3><p>A small-business truck sales site built around inventory, local search, accessibility, and fast loading.</p></div><div class="project-tags"><span>Frontend</span><span>SEO</span></div><span class="project-arrow">↗</span>
-        </a>
-        <a class="project-row" href="https://github.com/BradleyMatera/oscilloscope" target="_blank" rel="noreferrer">
-          <span class="project-index">004</span><div><h3>Oscilloscope Music Player</h3><p>This project: browser audio input, real-time analysis, Canvas graphics, signal controls, and the UI around it.</p></div><div class="project-tags"><span>Web Audio</span><span>Canvas</span></div><span class="project-arrow">↗</span>
-        </a>
-      </div>
-    </section>
-
-    <section class="about section-shell" id="about">
-      <div class="section-index">04 / ABOUT ME</div>
-      <div class="profile-grid">
-        <div class="profile-intro">
-          <img src="https://avatars.githubusercontent.com/u/162147754?v=4" alt="Bradley Matera" />
-          <div><p class="eyebrow">BRADLEY MATERA</p><h2>Full-Stack Software Engineer</h2><p>I build web software, work with cloud systems, troubleshoot technical problems, and experiment with AI tools. A lot of my personal projects start the same way this one did: I want to understand something, so I build a working version of it.</p></div>
-        </div>
-
-        <div class="profile-columns">
-          <div><small>NOW</small><h3>ERP Support Specialist</h3><p>Helm Group · Freeport, Illinois<br/>Starting September 2026</p></div>
-          <div><small>PREVIOUS</small><h3>AWS Cloud Support Associate Intern</h3><p>Amazon Web Services · 2025<br/>Cloud support engineering and AWS infrastructure</p></div>
-          <div><small>EDUCATION</small><h3>B.S. Web Development</h3><p>Full Sail University · 2025</p></div>
-          <div><small>CERTIFICATIONS</small><h3>AWS x2</h3><p>Solutions Architect – Associate<br/>AI Practitioner</p></div>
-        </div>
-      </div>
-
-      <div class="stack-marquee" aria-label="Technical skills">
-        <div>JAVASCRIPT <i>◆</i> TYPESCRIPT <i>◆</i> REACT <i>◆</i> NEXT.JS <i>◆</i> NODE <i>◆</i> SQL <i>◆</i> AWS <i>◆</i> DOCKER <i>◆</i> WEB AUDIO <i>◆</i> AI SYSTEMS <i>◆</i> TECHNICAL SUPPORT <i>◆</i></div>
-      </div>
-    </section>
-
-    <section class="contact section-shell">
-      <p class="eyebrow">CONTACT</p>
-      <h2>Find me or the code.</h2>
-      <div class="contact-links">
-        <a href="mailto:hello@bradleymatera.dev">hello@bradleymatera.dev ↗</a>
-        <a href="https://github.com/BradleyMatera" target="_blank" rel="noreferrer">GitHub ↗</a>
+      <div class="pipeline" aria-label="Audio processing pipeline">
+        <div><strong>INPUT</strong><span>file · microphone · tab capture · oscillators</span></div>
+        <i>→</i>
+        <div><strong>WEB AUDIO</strong><span>MediaElementSource · MediaStreamSource · OscillatorNode</span></div>
+        <i>→</i>
+        <div><strong>MEASURE</strong><span>time samples · FFT bins · stereo channels</span></div>
+        <i>→</i>
+        <div><strong>OUTPUT</strong><span>Canvas views · metrics · Tone Copy WAV</span></div>
       </div>
     </section>
   </main>
 
-  <footer class="footer section-shell"><span>© 2026 BRADLEY MATERA</span><span>AUDIO IS ANALYZED IN YOUR BROWSER</span><a href="#top">BACK TO TOP ↑</a></footer>
+  <footer class="footer section-shell"><span>OSCILLOSCOPE MUSIC LAB</span><span>AUDIO PROCESSING RUNS IN YOUR BROWSER</span><a href="#top">BACK TO TOP ↑</a></footer>
 
   <script type="module" src="./app.js"></script>
+  <script type="module" src="./tone-copy.js"></script>
   <script src="./ui.js" defer></script>
 </body>
 </html>
